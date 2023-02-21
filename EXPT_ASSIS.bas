@@ -1,16 +1,5 @@
 Attribute VB_Name = "EXPT_ASSIS"
-Private Sub Workbook_Open()
-     
-  ' Insere um novo separador e um menu no final da posiÁ„o 6 (Menu Tools)
-  With Application.MenuBars(xlWorksheet).Menus(0).MenuItems
-      .Add Caption:="-"
-      .Add Caption:="&Agregados", OnAction:="Agregados"
-      .Add Caption:="&Impressoes", OnAction:="Impressoes"
-      .Add Caption:="&Relatorio Trabalho", OnAction:="RelTrabalho"
-  End With
-   
-End Sub
-
+' Removido no dia 21/02/2023 funcoes utilizadas em outras planilhas.
 
 
 Function RetornaMedData(Antigo As Date, Atual As Date) As Date
@@ -22,189 +11,6 @@ Function RetornaMedData(Antigo As Date, Atual As Date) As Date
         End If
 
 End Function
-Function RelTrabalho() As String
-
-Dim mname, temp, stempp As String
-mname = "Rel. OperaÁıes"
-
-Dim meuformato As String
-Dim julionumero As String
-MsgBox ("Teste\n\n")
- Range("a1") = "numero"
-Range("b1") = "Data"
-Range("c1") = "Rota"
-Range("d1") = "placa"
-Range("e1") = "Arred"
-Range("f1") = "Equip"
-Range("g1") = "SaÌ"
-Range("h1") = "Cheg"
-Range("i1") = "h parado"
-Range("j1") = "V. Trans"
-Range("k1") = "V. P.Rio"
-Range("DADOS_MEDI«√O").AdvancedFilter Action:=xlFilterCopy, CriteriaRange:= _
-        Range("CRIT_MED"), CopyToRange:=Range("MED_DADOS"), Unique:=False
-        
-meuformato = MsgBox("Deseja formatar o relatÛrio de mediÁ„o deste perÌodo?", vbYesNo, "MEDI«√O ")
-If meuformato = vbYes Then
-        Range("a1") = "N∫"
-        Range("b1") = "Data"
-        Range("c1") = "Rota"
-        Range("d1") = "Placa"
-        Range("e1") = "Total"
-        Range("F1") = "Equip"
-        Range("G1") = "SaÌda"
-        Range("H1") = "Chegada"
-        Range("I1") = "Par"
-        Range("J1") = "Trans"
-        Range("K1") = "P.Rio"
-        
-        Sheets("Rel. OperaÁıes").Select
-            julionumero = Range("bE2").Value + 1
-            temp = Format(Range("b2").Value, "MMMM")
-            Range("n2").Select
-            Selection.Copy
-            Range("n2", ActiveCell.Offset((julionumero - 1), 0)).Select
-            ActiveSheet.Paste
-            Selection.Copy
-            Range("D2").Select
-            Range("d2", ActiveCell.Offset((julionumero - 1), 0)).Select
-            Selection.PasteSpecial Paste:=xlValues
-            
-            Range("m2").Select
-            Selection.Copy
-            Range("H2").Select
-            Range("H2", ActiveCell.Offset((julionumero - 2), 0)).Select
-            ActiveSheet.Paste
-            Range("N3", Range("N3").End(xlDown)).Select
-            Selection.ClearContents
-            Range("a1").Select
-            
-            Range("A1", ActiveCell.Offset((julionumero - 1), 10)).Select
-            With Selection.Font
-                .Name = "Tahoma"
-                .FontStyle = "Normal"
-                .Size = 9
-        End With
-        With Selection.Borders(xlEdgeLeft)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-            With Selection.Borders(xlEdgeTop)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-            With Selection.Borders(xlEdgeBottom)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-            With Selection.Borders(xlEdgeRight)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-            With Selection.Borders(xlInsideVertical)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-            With Selection.Borders(xlInsideHorizontal)
-                .LineStyle = xlContinuous
-                .Weight = xlThin
-                .ColorIndex = xlAutomatic
-            End With
-           
-                With ActiveSheet.PageSetup
-                    .PrintTitleRows = "$1:$1"
-                    .PrintTitleColumns = ""
-                End With
-                ActiveSheet.PageSetup.PrintArea = "$A$1:$K$" + julionumero
-                With ActiveSheet.PageSetup
-                    .LeftHeader = ""
-                    .CenterHeader = _
-                    "&""Times New Roman,Negrito it·lico""&16PDCA AMBIENTAL Ltda.&""Arial,Normal""&10" & Chr(10) & "&""Times New Roman,It·lico""&14PetrÛpolis" & Chr(10) & "&""Arial,Normal""&10" & Chr(10) & "&A &F"
-                    .RightHeader = "" & Chr(10) & "" & Chr(10) & "" & Chr(10) & "" & Chr(10) & "PetrÛpolis, &"" ,Regular""&D"
-                    .LeftFooter = _
-                    "_______________________" & Chr(10) & "             &""Arial,Negrito""&9COMDEP"
-                    .CenterFooter = ""
-                    .RightFooter = _
-                    "_________________________" & Chr(10) & "&""Times New Roman,Negrito it·lico""Limpatech                   ." & Chr(10) & "&""Times New Roman,Normal""&9Certificada pela NBR ISO 9001"
-                    .LeftMargin = Application.InchesToPoints(0.393700787401575)
-                    .RightMargin = Application.InchesToPoints(0.393700787401575)
-                    .TopMargin = Application.InchesToPoints(1.18110236220472)
-                    .BottomMargin = Application.InchesToPoints(1.06299212598425)
-                    .HeaderMargin = Application.InchesToPoints(0.275590551181102)
-                    .FooterMargin = Application.InchesToPoints(0.275590551181102)
-                    .PrintHeadings = False
-                    .PrintGridlines = False
-                    .PrintComments = xlPrintNoComments
-                    '.PrintQuality = 180
-                    .CenterHorizontally = True
-                    .CenterVertically = False
-                    .Orientation = xlPortrait
-                    .Draft = False
-                    .FirstPageNumber = xlAutomatic
-                    .Order = xlDownThenOver
-                    .BlackAndWhite = False
-                    .Zoom = 100
-                End With
-                
-        Else
-    End If
-    
-    RelTrabalho = "CONCLUIDO COM SUCESSO!!!"
-End Function
-Sub ATUALIZE()
-        Range("a1") = "numero"
-        Range("b1") = "Data"
-        Range("c1") = "Rota"
-        Range("d1") = "placa"
-        Range("e1") = "Arred"
-        Range("F1") = "Equip"
-        Range("G1") = "SaÌ"
-        Range("H1") = "Cheg"
-        Range("I1") = "h parado"
-        Range("J1") = "V. Trans"
-        Range("K1") = "V. P.Rio"
-        Range("DADOS_MEDI«√O").AdvancedFilter Action:=xlFilterCopy, CriteriaRange:= _
-                Range("CRIT_MED"), CopyToRange:=Range("MED_DADOS"), Unique:=False
-End Sub
-
-
-
-Sub Agregados()
-    Dim C As Integer
-
-    C = Application.Worksheets.Count
-    FRMAGREGADO.Show
-    
-    For I = 1 To C
-        If Application.Worksheets(I).Name Like Format("A - *", ">") Then
-            FRMAGREGADO.ComboBox1.AddItem Application.Worksheets(I).Name
-           
-            End If
-            Next I
-End Sub
-
-Sub Impressoes()
-    If MATIVO = False Then
-            FRMIMPRESSAO.ComboBox1.Clear
-            
-            FRMIMPRESSAO.ComboBox1.AddItem "COMBUSTIVEL POR ROTA"
-            FRMIMPRESSAO.ComboBox1.AddItem "COMBUSTIVEL POR EQUIPAMENTO"
-            FRMIMPRESSAO.ComboBox1.AddItem "VAZADAS CARRETAS"
-            FRMIMPRESSAO.ComboBox1.AddItem "VAZADAS CAMINHOES"
-            FRMIMPRESSAO.ComboBox1.AddItem "INFORMACOES GERAIS"
-            FRMIMPRESSAO.ComboBox1.AddItem "MEDICAO"
-            FRMIMPRESSAO.ComboBox1.AddItem "RELATORIO COMDEP"
-            MATIVO = True
-            FRMIMPRESSAO.Show
-            Else
-            MATIVO = False
-    End If
-End Sub
 Function RetornaDobra(INICIO As Date, FIM As Date) As Boolean
 RetornaDobra = False
 If INICIO > FIM Then
@@ -249,10 +55,10 @@ If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = True Then
     escolhat = 2 ' funcionario noturno e saiu diurno
     End If
 If RetornaDobra(INICIO, FIM) = True And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 3 ' funcionario È diurno e saiu noturno
+    escolhat = 3 ' funcionario √© diurno e saiu noturno
     End If
 If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 4 ' funcionario È diurno e saiu diurno
+    escolhat = 4 ' funcionario √© diurno e saiu diurno
     End If
 
 Select Case escolhaf
@@ -272,7 +78,7 @@ Case 2 ' dia normal e proximo dia feriado
                 Hora50 = #12:00:00 AM#
         Case 3 ' diurno e saiu noturno
                 If tfim >= #10:00:00 PM# Then
-                'se a hora extra comeca depois de 22:00 ele n„o tem 50%, mas pode receber
+                'se a hora extra comeca depois de 22:00 ele n√£o tem 50%, mas pode receber
                 
                     Hora50 = #12:00:00 AM#
                     End If
@@ -365,7 +171,7 @@ Case 4 ' dia normal e proximo dia normal
               End If
         Case 3 ' diurno e saiu noturno
                 If tfim >= #10:00:00 PM# And FIM > #5:00:00 AM# Then
-                'se a hora extra comeca depois de 22:00 ele n„o tem 50%, mas pode receber
+                'se a hora extra comeca depois de 22:00 ele n√£o tem 50%, mas pode receber
                 ' se ele passar de 05:00, em se tratando de funcionario diurno ja sera extra
                     Hora50 = RetornaDifData(#5:00:00 AM#, FIM)
                     End If
@@ -449,10 +255,10 @@ If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = True Then
     escolhat = 2 ' funcionario noturno e saiu diurno
     End If
 If RetornaDobra(INICIO, FIM) = True And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 3 ' funcionario È diurno e saiu noturno
+    escolhat = 3 ' funcionario √© diurno e saiu noturno
     End If
 If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 4 ' funcionario È diurno e saiu diurno
+    escolhat = 4 ' funcionario √© diurno e saiu diurno
     End If
 
 Select Case escolhaf
@@ -608,10 +414,10 @@ If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = True Then
     escolhat = 2 ' funcionario noturno e saiu diurno
     End If
 If RetornaDobra(INICIO, FIM) = True And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 3 ' funcionario È diurno e saiu noturno
+    escolhat = 3 ' funcionario √© diurno e saiu noturno
     End If
 If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 4 ' funcionario È diurno e saiu diurno
+    escolhat = 4 ' funcionario √© diurno e saiu diurno
     End If
 
 Select Case escolhaf
@@ -631,12 +437,12 @@ Case 2 ' dia normal e proximo dia feriado
                 Hora50N = #12:00:00 AM#
         Case 3 ' diurno e saiu noturno
                 If tfim >= #10:00:00 PM# And INICIO < tfim Then
-                'se a hora extra comeca depois de 22:00 ele n„o tem 50%, mas pode receber
+                'se a hora extra comeca depois de 22:00 ele n√£o tem 50%, mas pode receber
                 
                     Hora50N = RetornaDifData(tfim, #11:59:00 PM#) + #12:01:00 AM#
                     End If
                 If tfim >= #10:00:00 PM# And INICIO > tfim Then
-                'se a hora extra comeca depois de 22:00 ele n„o tem 50%, mas pode receber
+                'se a hora extra comeca depois de 22:00 ele n√£o tem 50%, mas pode receber
                 
                     Hora50N = RetornaDifData(INICIO, #11:59:00 PM#) + #12:01:00 AM#
                     End If
@@ -652,18 +458,18 @@ Case 2 ' dia normal e proximo dia feriado
                                 
         Case 4 ' diurno e saiu diurno
                 If FIM > #10:00:00 PM# And FIM > tfim Then
-                'funcionario saiu mais de 22:00 e alÈm de seu turno
+                'funcionario saiu mais de 22:00 e al√©m de seu turno
                     If tfim > #10:00:00 PM# Then
                     'turno do funcionario era maior que 22:00
                         If INICIO > tfim Then
-                        'inicio do trabalho foi maior que sua saÌda de turno
+                        'inicio do trabalho foi maior que sua sa√≠da de turno
                             Hora50N = RetornaDifData(INICIO, FIM)
                             Else
-                            'iniciou o trabalho antes de sua saÌda de turno
+                            'iniciou o trabalho antes de sua sa√≠da de turno
                             Hora50N = RetornaDifData(tfim, FIM)
                         End If
                     Else
-                    'turno do funcion·rio È menor que 22:00
+                    'turno do funcion√°rio √© menor que 22:00
                         If INICIO >= #10:00:00 PM# Then
                             Hora50N = RetornaDifData(INICIO, FIM)
                             Else
@@ -719,7 +525,7 @@ Case 4 ' dia normal e proximo dia normal
                 If INICIO > tfim Then
                     If tfim >= #10:00:00 PM# And FIM > #5:00:00 AM# Then
                         'se a hora extra comeca depois de 22:00 ele tem 50% noturno
-                        ' se ele passar de 05:00, ele tambÈm tem mais 05:00
+                        ' se ele passar de 05:00, ele tamb√©m tem mais 05:00
                             Hora50N = RetornaDifData(INICIO, #11:59:00 PM#) + #5:01:00 AM#
                             End If
                     If tfim < #10:00:00 PM# And FIM > #5:00:00 AM# Then
@@ -733,7 +539,7 @@ Case 4 ' dia normal e proximo dia normal
                         End If
                     If tfim >= #10:00:00 PM# And FIM <= #5:00:00 AM# Then
                         'se a hora extra comeca depois de 22:00 ele tem 50% noturno
-                        ' se ele passar de 05:00, ele tambÈm tem mais 05:00
+                        ' se ele passar de 05:00, ele tamb√©m tem mais 05:00
                             Hora50N = RetornaDifData(INICIO, #11:59:00 PM#) + #12:01:00 AM# + FIM
                             End If
                     If tfim < #10:00:00 PM# And FIM <= #5:00:00 AM# Then
@@ -748,7 +554,7 @@ Case 4 ' dia normal e proximo dia normal
                     Else
                             If tfim >= #10:00:00 PM# And FIM > #5:00:00 AM# Then
                                 'se a hora extra comeca depois de 22:00 ele tem 50% noturno
-                                ' se ele passar de 05:00, ele tambÈm tem mais 05:00
+                                ' se ele passar de 05:00, ele tamb√©m tem mais 05:00
                                     Hora50N = RetornaDifData(tfim, #11:59:00 PM#) + #5:01:00 AM#
                                     End If
                             If tfim < #10:00:00 PM# And FIM > #5:00:00 AM# Then
@@ -758,7 +564,7 @@ Case 4 ' dia normal e proximo dia normal
                                      End If
                             If tfim >= #10:00:00 PM# And FIM <= #5:00:00 AM# Then
                                 'se a hora extra comeca depois de 22:00 ele tem 50% noturno
-                                ' se ele passar de 05:00, ele tambÈm tem mais 05:00
+                                ' se ele passar de 05:00, ele tamb√©m tem mais 05:00
                                     Hora50N = RetornaDifData(tfim, #11:59:00 PM#) + #12:01:00 AM# + FIM
                                     End If
                             If tfim < #10:00:00 PM# And FIM <= #5:00:00 AM# Then
@@ -772,29 +578,29 @@ Case 4 ' dia normal e proximo dia normal
         Case 4 ' diurno e saiu diurno
         'falta comentar e concluir
             If FIM <= #10:00:00 PM# Then
-                'funcionario saiu antes de 22:00 n„o tem hora noturna
+                'funcionario saiu antes de 22:00 n√£o tem hora noturna
                         Hora50N = #12:00:00 AM#
             Else
-                'funcion·rio saiu depois de 22:00 pode receber hora noturna
+                'funcion√°rio saiu depois de 22:00 pode receber hora noturna
                 If FIM > tfim Then
                 'funcionario saiu depois da hora e depois de 22:00
                         If tfim > #10:00:00 PM# Then
-                        'saÌda do funcionario maior que 22:oo
+                        'sa√≠da do funcionario maior que 22:oo
                             If INICIO < tfim Then
                             'inicio menor que o termino do turno
                                 Hora50N = RetornaDifData(tfim, FIM)
                                 Else
-                                'inicio maior ou igual a saÌda do turno
+                                'inicio maior ou igual a sa√≠da do turno
                                 Hora50N = RetornaDifData(INICIO, FIM)
                                 End If
                         Else
-                                'turno de saÌda È menor do que 22:oo
+                                'turno de sa√≠da √© menor do que 22:oo
                                 If INICIO > #10:00:00 PM# And INICIO > tfim Then
-                                    'inicio do funcion·rio È depois de 22:oo e depois de sua saÌda
+                                    'inicio do funcion√°rio √© depois de 22:oo e depois de sua sa√≠da
                                             Hora50N = RetornaDifData(INICIO, FIM)
                                 End If
                                 If INICIO <= #10:00:00 PM# Then
-                                    'inicio do funcion·rio È depois de 22:oo e depois de sua saÌda
+                                    'inicio do funcion√°rio √© depois de 22:oo e depois de sua sa√≠da
                                             Hora50N = RetornaDifData(#10:00:00 PM#, FIM)
                                 End If
                         End If
@@ -834,10 +640,10 @@ If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = True Then
     escolhat = 2 ' funcionario noturno e saiu diurno
     End If
 If RetornaDobra(INICIO, FIM) = True And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 3 ' funcionario È diurno e saiu noturno
+    escolhat = 3 ' funcionario √© diurno e saiu noturno
     End If
 If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 4 ' funcionario È diurno e saiu diurno
+    escolhat = 4 ' funcionario √© diurno e saiu diurno
     End If
 
 Select Case escolhaf
@@ -904,7 +710,7 @@ Case 2 ' dia normal e proximo dia feriado
         Case 3 ' diurno e saiu noturno
             
                 If FIM > #5:00:00 AM# Then
-                'se a hora extra comeca depois de 00:00 ele n„o tem 100%n, mas pode receber
+                'se a hora extra comeca depois de 00:00 ele n√£o tem 100%n, mas pode receber
                        Hora100 = RetornaDifData(#5:00:00 AM#, FIM)
                     End If
                             
@@ -976,10 +782,10 @@ If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = True Then
     escolhat = 2 ' funcionario noturno e saiu diurno
     End If
 If RetornaDobra(INICIO, FIM) = True And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 3 ' funcionario È diurno e saiu noturno
+    escolhat = 3 ' funcionario √© diurno e saiu noturno
     End If
 If RetornaDobra(INICIO, FIM) = False And RetornaDobra(tinicio, tfim) = False Then
-    escolhat = 4 ' funcionario È diurno e saiu diurno
+    escolhat = 4 ' funcionario √© diurno e saiu diurno
     End If
 
 Select Case escolhaf
@@ -1053,7 +859,7 @@ Case 2 ' dia normal e proximo dia feriado
                 Hora100N = #12:00:00 AM#
         Case 3 ' diurno e saiu noturno
                 If FIM >= #5:00:00 AM# Then
-                'se a hora extra comeca depois de 22:00 ele n„o tem 50%, mas pode receber
+                'se a hora extra comeca depois de 22:00 ele n√£o tem 50%, mas pode receber
                     Hora100N = #5:00:00 AM#
                     Else
                     Hora100N = FIM
@@ -1102,19 +908,3 @@ End Select
 '    End If
 
 End Function
-Sub REG_DADOS()
-MsgBox ("Teste\n\n")
- Range("a1") = "numero"
-Range("b1") = "Data"
-Range("c1") = "Rota"
-Range("d1") = "placa"
-Range("e1") = "Arred"
-Range("f1") = "Equip"
-Range("g1") = "SaÌ"
-Range("h1") = "Cheg"
-Range("i1") = "h parado"
-Range("j1") = "V. Trans"
-Range("k1") = "V. P.Rio"
-Range("DADOS_MEDI«√O").AdvancedFilter Action:=xlFilterCopy, CriteriaRange:= _
-        Range("CRIT_MED"), CopyToRange:=Range("MED_DADOS"), Unique:=False
-End Sub
